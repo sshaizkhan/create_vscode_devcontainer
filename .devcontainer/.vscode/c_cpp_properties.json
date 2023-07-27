@@ -1,0 +1,51 @@
+{
+    "configurations": [
+        {
+            "name": "Config: Dev",
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "includePath": [
+                "/opt/ros/humble/include/**",
+                "${workspaceFolder}/workspace_name/src/**"
+            ],
+            "compileCommands": "/home/bot/workspace_name/build-dev/compile_commands.json",
+            "intelliSenseMode": "gcc-x64"
+        },
+        {
+            "name": "Config: Release",
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "includePath": [
+                "/opt/ros/humble/include/**",
+                "${workspaceFolder}/workspace_name/**"
+            ],
+            "compileCommands": "/home/bot/workspace_name/build-release/compile_commands.json",
+            "intelliSenseMode": "gcc-x64"
+        },
+        {
+            "name": "Config: Debug",
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "includePath": [
+                "/opt/ros/humble/include/**",
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/workspace_name/src/**",
+                "/usr/include/eigen3"
+            ],
+            "compileCommands": "/home/bot/workspace_name/build-debug/compile_commands.json",
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "/opt/ros/humble/include/**"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}

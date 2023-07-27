@@ -1,0 +1,226 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev-build-packages-up-to",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "${input:package}",
+        "dev",
+        "false"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": {
+        "reevaluateOnRerun": false
+      }
+    },
+    {
+      "label": "debug-build-packages-up-to",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "${input:package}",
+        "debug",
+        "false"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": {
+        "reevaluateOnRerun": false
+      }
+    },
+    {
+      "label": "dev-build-packages-select",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "${input:package}",
+        "dev",
+        "true"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": {
+        "reevaluateOnRerun": false
+      }
+    },
+    {
+      "label": "release-build-package-select",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "${input:package}",
+        "release",
+        "true"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": {
+        "reevaluateOnRerun": false
+      }
+    },
+    {
+      "label": "debug-build-packages-select",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "${input:package}",
+        "debug",
+        "true"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "runOptions": {
+        "reevaluateOnRerun": false
+      }
+    },
+    {
+      "label": "dev-build-app-all",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/.devcontainer/build.bash",
+      "args": [
+        "moveit2_tutorials",
+        "dev",
+        ""
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "release-build-deps",
+      "type": "shell",
+      "command": "cd /home/bot/workspace_name/src/deps/moveit2 && colcon build --mixin release --parallel-workers 1",
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "debug-build-moveit-app",
+      "type": "shell",
+      "command": "cd /home/bot/workspace_name/src/application_name && colcon build --mixin debug",
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "update-deps",
+      "type": "shell",
+      "command": "/home/bot/workspace_name/src/application_name/scripts/update_deps.bash",
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "update-python-deps",
+      "type": "shell",
+      "command": "cd /home/bot/workspace_name/src/application_name/scripts/ && ./update_python_deps.bash",
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "clang-format-app",
+      "type": "shell",
+      "command": "/home/bot/workspace_name2_ws/src/application_name/.devcontainer/clang-format-app.bash",
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "launch-terminator",
+      "type": "shell",
+      "command": "terminator -u --title application_name",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "never"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "autoflake-remove-all-unused-imports",
+      "type": "shell",
+      "command": "/usr/bin/python3",
+      "args": [
+        "-m",
+        "autoflake",
+        "-i",
+        "--remove-all-unused-imports",
+        "${file}"
+      ],
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "never"
+      },
+      "problemMatcher": []
+    },
+  ],
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "package",
+      "description": "The package to select",
+      "options": [
+        "plugins_gazebo",
+        "mtc_tutorial",
+        "moveit_resources_ur_description",
+        "moveit_resources_ur5_moveit_config",
+        "gazebo_interfaces"
+      ],
+      "default": "ros2_mapping"
+    }
+  ]
+}
