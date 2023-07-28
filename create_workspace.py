@@ -11,8 +11,8 @@ class WorkspaceCreator:
         self.username = getpass.getuser()
         self.dev_ws_path = f"/home/{self.username}/dev_ws"
         self.path = f"{self.dev_ws_path}/{self.workspace_name}/src/{self.application_name}"
-        self.src_folder = ".devcontainer"  # Replace with your .devcontainer path
-        self.src_file = "devcontainer.env"  # Replace with your .devcontainer.env path
+        self.devcontainer_folder = ".devcontainer" 
+        self.devcontainer_env_file = "devcontainer.env"
         self.dest_file = f"{self.dev_ws_path}/{self.workspace_name}/src/devcontainer.env"
 
     def replace_content(self, file_path):
@@ -59,7 +59,7 @@ class WorkspaceCreator:
         if os.path.exists(temp_devcontainer) and os.path.isdir(temp_devcontainer):
             shutil.rmtree(temp_devcontainer)
 
-        shutil.copytree(self.src_folder, temp_devcontainer)
+        shutil.copytree(self.devcontainer_folder, temp_devcontainer)
 
         for subdir, dirs, files in os.walk(temp_devcontainer):
             for file in files:
@@ -71,7 +71,7 @@ class WorkspaceCreator:
         dest_folder = os.path.join(self.path, ".devcontainer")
         shutil.copytree(temp_devcontainer, dest_folder)
         shutil.rmtree(temp_folder)
-        shutil.copy2(self.src_file, self.dest_file)
+        shutil.copy2(self.devcontainer_env_file, self.dest_file)
 
         print(f'Successfully copied .devcontainer and devcontainer.env to to {self.path}')
 
