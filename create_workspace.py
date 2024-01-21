@@ -11,7 +11,7 @@ class WorkspaceCreator:
         self.username = getpass.getuser()
         self.dev_ws_path = f"/home/{self.username}/dev_ws"
         self.path = f"{self.dev_ws_path}/{self.workspace_name}/src/{self.application_name}"
-        self.devcontainer_folder = ".devcontainer" 
+        self.devcontainer_folder = ".devcontainer"
         self.devcontainer_env_file = "devcontainer.env"
         self.dest_file = f"{self.dev_ws_path}/{self.workspace_name}/src/devcontainer.env"
 
@@ -33,7 +33,8 @@ class WorkspaceCreator:
             content = file.read()
 
             # Use regex to replace the values
-            content = re.sub(r'(?<=\bname": ")[^"]*', self.workspace_name, content)
+            content = re.sub(
+                r'(?<=\bname": ")[^"]*', self.workspace_name, content)
             content = re.sub(
                 r'(?<=\bCONTAINER_NAME": ")[^"]*', self.application_name, content)
 
@@ -73,7 +74,8 @@ class WorkspaceCreator:
         shutil.rmtree(temp_folder)
         shutil.copy2(self.devcontainer_env_file, self.dest_file)
 
-        print(f'Successfully copied .devcontainer and devcontainer.env to to {self.path}')
+        print(
+            f'Successfully copied .devcontainer and devcontainer.env to to {self.path}')
 
 
 if __name__ == '__main__':
