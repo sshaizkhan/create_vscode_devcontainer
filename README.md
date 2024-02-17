@@ -1,25 +1,27 @@
-# Create VSCode Devcontainer
-This is a python script based repo that can generate vscode devcontainer for ROS2 development.
+# VSCode Devcontainer Creation for ROS2 Development
+This repository hosts a Python script designed to automate the generation of a VSCode devcontainer specifically tailored for ROS2 development. The script streamlines the process of setting up a development workspace and application directories within a `dev_ws` folder located in the user's home directory.
 
-This script will create a folder `dev_ws` in the home directory under which user will find their workspace and the development application directories
+# Getting Started
+## Prerequisites
+- Visual Studio Code
+- Python installed on your system
 
-## How to run this script
+## Installation and Usage
+1. Clone the Repository: First, clone this repository to your local machine.
 
-To use it, run this python [script](./create_workspace.py) which will ask for following input from user:
+2. Run the Script: Execute the provided `create_workspace.py` script. During execution, you will be prompted to input:
 
-- User desired workspace
-- User desired application name
+    - Your desired workspace name
+    - Your desired application name
 
-For e.g., if I want to work on [navigation2](https://navigation.ros.org/) and create my own development environment for my custom robot. I can use the above script to create a devcontaine environment such that I'll provide the following input for the above :
+    For example, if you aim to work on `navigation2` and establish a development environment, you would provide inputs like:
+    ```
+    - Workspace name: navigation2_ws
+    - Application name: navigation_app
+    ```
+3. Verify the Directory Structure: Post-execution, a folder will be created in your home directory with the following structure:
 
-- Workspace name: navigation2_ws
-- Application_name: navigation_app
-
-Once the user has provided the input to the script, a folder will create in the home directory with following directory tree:
-
-### Directory structure
-
-    .
+```
     ├── home/$USER
         ├── dev_ws
             ├──navigation2_ws                    
@@ -27,13 +29,17 @@ Once the user has provided the input to the script, a folder will create in the 
                    ├── devcontainer.env 
                    ├── navigation_app         
                         └── .devcontainer
+```
+4. Set Up in Visual Studio Code:
 
+    - Open VS Code in the `application_name` directory (e.g., `navigation2_app`).
+    - Install the necessary VS Code extensions:
+        - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+        - [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+    - After installing the extensions, reload or reopen VS Code in the same folder. A prompt will appear in the bottom right corner, asking if you want to Reopen in Container. Selecting this option will begin the container development process.
 
-Once you have a similar directory structure, open Visual Studio Code inside the directory `application_name` (navigation2_app) and download the following extensions:
+## Contributions and Feedback
+Contributions, suggestions, and feedback are welcome to enhance the script and its documentation. Please feel free to raise issues or submit pull requests on the repository.
 
-1. Dev Containers: [ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-2. Remote Development (https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-
-After downloading the above extensions, reload the VS Code window or reopen VS Code in the same folder and you a small pop-up should be appearing on the bottom right asking if you want to `Reopen in Container`. After clicking on it, sit back, relax and let the container development process complete to start your development.
-
-**HAPPY CODING!!**
+## Happy Coding!
+Enjoy a seamless and efficient development experience with your new ROS2 devcontainer setup
