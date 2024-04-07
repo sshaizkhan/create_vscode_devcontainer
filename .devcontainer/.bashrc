@@ -114,17 +114,22 @@ if ! shopt -oq posix; then
 fi
 
 #bash completion
-source /etc/profile.d/bash_completion.sh
+if [ -f /etc/profile.d/bash_completion.sh ]; then
+    echo "Sourcing: /etc/profile.d/bash_completion.sh"
+    source /etc/profile.d/bash_completion.sh
+fi
 
 # Source the ROS 2 environment
-echo "Sourcing: /opt/ros/humble/setup.bash"
-source /opt/ros/humble/setup.bash
+if [ -f /opt/ros/humble/setup.bash ]; then
+    echo "Sourcing: /opt/ros/humble/setup.bash"
+    source /opt/ros/humble/setup.bash
+fi
 
 # Source workspace
-# if test -f "source ~/workspace_name/install/setup.bash"; then
-    # echo "Sourcing: workspace_name/install/setup.bash"
-source ~/workspace_name/install/setup.bash
-# fi
+if [ -f ~/workspace_name/install/setup.bash ]; then
+    echo "Sourcing: workspace_name/install/setup.bash"
+    source ~/workspace_name/install/setup.bash
+fi
 
 # source colcon argcomplete
 if test -f "/usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash"; then
