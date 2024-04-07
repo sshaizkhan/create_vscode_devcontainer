@@ -37,16 +37,14 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.cpptools",
         "ms-python.vscode-pylance",
         "ms-python.python",
         "twxs.cmake",
         "ms-vscode.cmake-tools",
         "mutantdino.resourcemonitor",
         "mhutchie.git-graph",
-        "grapecity.gc-excelviewer",
         "coenraads.bracket-pair-colorizer",
-        "ms-vscode.cpptools-extension-pack"
+        "llvm-vs-code-extensions.vscode-clangd"
       ]
     }
   },
