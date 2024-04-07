@@ -36,7 +36,16 @@ RUN sudo apt update
 RUN sudo apt install python3-colcon-common-extensions
 RUN sudo apt install python3-colcon-mixin
 RUN sudo apt-get install -y mesa-utils
-
 RUN sudo apt install python3-vcstool
+
+# Cyclone dds for Humble
+RUN sudo apt install -y ros-$ROS_DISTRO-rmw-cyclonedds-cpp
+RUN export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+
+# Install Moveit2
+RUN sudo apt install -y ros-$ROS_DISTRO-moveit
+
+# Install Bash completion
+RUN sudo apt install -y bash-completion
 
 CMD [ "bash" ]
