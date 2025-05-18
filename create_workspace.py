@@ -4,14 +4,16 @@ import re
 import getpass
 import json
 
-
 class WorkspaceCreator:
     def __init__(self, workspace_name, application_name, distro_type):
         self.workspace_name = workspace_name
         self.application_name = application_name
         self.distro_type = distro_type
         self.username = getpass.getuser()
-        self.dev_ws_path = f"/home/{self.username}/dev_ws"
+        if self.distro_type == "Mac":
+            self.dev_ws_path = f"/Users/{self.username}/dev_ws"
+        else:
+            self.dev_ws_path = f"/home/{self.username}/dev_ws"
         self.path = f"{self.dev_ws_path}/{self.workspace_name}/src/{self.application_name}"
         self.devcontainer_folder = ".devcontainer"
         self.devcontainer_env_file = "devcontainer.env"
@@ -21,11 +23,9 @@ class WorkspaceCreator:
         with open(file_path, 'r') as file:
             filedata = file.read()
 
-        # Replace the target strings
         filedata = filedata.replace('workspace_name', self.workspace_name)
         filedata = filedata.replace('application_name', self.application_name)
 
-        # Write the file out again
         with open(file_path, 'w') as file:
             file.write(filedata)
 
@@ -34,84 +34,89 @@ class WorkspaceCreator:
         with open(file_path, 'r+') as file:
             content = file.read()
 
-            # Use regex to replace the values
             content = re.sub(
                 r'(?<=\bname": ")[^"]*', self.workspace_name, content)
             content = re.sub(
                 r'(?<=\bCONTAINER_NAME": ")[^"]*', self.application_name, content)
-
-            # Update the distro type
             content = re.sub(
                 r'(?<=\bDISTRO": ")[^"]*', self.distro_type, content)
 
-            if self.distro_type == 'WSL':
-                content = self.modify_runArgs(content)
-            else:
-                content = self.modify_runArgs(content)
+            content = self.modify_runArgs(content)
 
-            # Move the cursor to the beginning of the file
             file.seek(0)
-
-            # Save the changes
             file.write(content)
-
-            # Truncate anything remaining as the new data might be smaller than the previous
             file.truncate()
 
     def modify_runArgs(self, content: str):
-            
-            wsl_run_args = [
-                "--cap-add=SYS_PTRACE",
-                "--security-opt=seccomp=unconfined",
-                "--privileged",
-                "--network=host",
-                "--env=NVIDIA_VISIBLE_DEVICES=all",
-                "--env=NVIDIA_DRIVER_CAPABILITIES=all",
-                "--env=DISPLAY",
-                "--env=WAYLAND_DISPLAY",
-                "--env=PULSE_SERVER",
-                "--gpus",
-                "all",
-                "--env=QT_X11_NO_MITSHM=1",
-                "--volume=tmp/.X11-unix:/tmp/.X11-unix",
-                "--volume=/mnt/wslg:/mnt/wslg",
-                "--volume=/usr/lib/wsl:/usr/lib/wsl",
-                "--device-cgroup-rule=c 189:* rmw",
-                " --device=/dev/dxg",
-                " --device=/dev/dri/card0",
-                " --device=/dev/dri/renderD128",
-                "--env-file",
-                "../devcontainer.env"
-            ]
-            linux_run_args = [
-                "--cap-add=SYS_PTRACE",
-                "--security-opt=seccomp=unconfined",
-                "--privileged",
-                "--network=host",
-                "--env=NVIDIA_VISIBLE_DEVICES=all",
-                "--env=NVIDIA_DRIVER_CAPABILITIES=all",
-                "--env=DISPLAY",
-                "--gpus",
-                "all",
-                "--env=QT_X11_NO_MITSHM=1",
-                "-v",
-                "/tmp/.X11-unix:/tmp/.X11-unix:rw",
-                "--volume=/etc/X11:/etc/X11:rw",
-                "--volume=/dev:/dev:rw",
-                "--device-cgroup-rule=c 189:* rmw",
-                "--volume=/dev/bus/usb:/dev/bus/usb:rw",
-                "--volume=/dev/input:/dev/input:rw",
-                "--env-file",
-                "../devcontainer.env"
-            ]
-            formatted_args = json.dumps(wsl_run_args if self.distro_type == 'WSL' else linux_run_args, indent=2)
+        wsl_run_args = [
+            "--cap-add=SYS_PTRACE",
+            "--security-opt=seccomp=unconfined",
+            "--privileged",
+            "--network=host",
+            "--env=NVIDIA_VISIBLE_DEVICES=all",
+            "--env=NVIDIA_DRIVER_CAPABILITIES=all",
+            "--env=DISPLAY",
+            "--env=WAYLAND_DISPLAY",
+            "--env=PULSE_SERVER",
+            "--gpus",
+            "all",
+            "--env=QT_X11_NO_MITSHM=1",
+            "--volume=tmp/.X11-unix:/tmp/.X11-unix",
+            "--volume=/mnt/wslg:/mnt/wslg",
+            "--volume=/usr/lib/wsl:/usr/lib/wsl",
+            "--device-cgroup-rule=c 189:* rmw",
+            " --device=/dev/dxg",
+            " --device=/dev/dri/card0",
+            " --device=/dev/dri/renderD128",
+            "--env-file",
+            "../devcontainer.env"
+        ]
+        linux_run_args = [
+            "--cap-add=SYS_PTRACE",
+            "--security-opt=seccomp=unconfined",
+            "--privileged",
+            "--network=host",
+            "--env=NVIDIA_VISIBLE_DEVICES=all",
+            "--env=NVIDIA_DRIVER_CAPABILITIES=all",
+            "--env=DISPLAY",
+            "--gpus",
+            "all",
+            "--env=QT_X11_NO_MITSHM=1",
+            "-v",
+            "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+            "--volume=/etc/X11:/etc/X11:rw",
+            "--volume=/dev:/dev:rw",
+            "--device-cgroup-rule=c 189:* rmw",
+            "--volume=/dev/bus/usb:/dev/bus/usb:rw",
+            "--volume=/dev/input:/dev/input:rw",
+            "--env-file",
+            "../devcontainer.env"
+        ]
+        mac_run_args = [
+            "--cap-add=SYS_PTRACE",
+            "--security-opt=seccomp=unconfined",
+            "--env=DISPLAY=host.docker.internal:0",
+            "--env=QT_X11_NO_MITSHM=1",
+            "-v",
+            "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+            "--platform=linux/arm64",  # Ensures container uses ARM arch (Apple Silicon)
+            "--env-file",
+            "../devcontainer.env"
+        ]
+        if self.distro_type == 'WSL':
+            formatted_args = json.dumps(wsl_run_args, indent=2)
+        elif self.distro_type == 'Linux':
+            formatted_args = json.dumps(linux_run_args, indent=2)
+        elif self.distro_type == 'Mac':
+            formatted_args = json.dumps(mac_run_args, indent=2)
+        else:
+            formatted_args = "[]"
 
-            # Regex pattern to find and replace runArgs
-            pattern = r'("runArgs": )(\[.*?\])'
-            replacement = r'\1' + formatted_args
+        pattern = r'("runArgs": )(\[.*?\])'
+        replacement = r'\1' + formatted_args
 
-            new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-            return new_content
+        new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+        return new_content
 
     def create_directory(self, path):
         if not os.path.exists(path):
@@ -143,20 +148,22 @@ class WorkspaceCreator:
         print(
             f'Successfully copied .devcontainer and devcontainer.env to to {self.path}')
 
-
 if __name__ == '__main__':
     print('Username', getpass.getuser())
     print("Please choose the type of distro:")
     print("1. WSL")
     print("2. Linux")
-    distro_choice = input("Enter your choice (1/2): ")
-    if distro_choice not in ['1', '2']:
-        print("Invalid choice. Please enter 1 for WSL or 2 for Linux.")
+    print("3. Mac (Apple Silicon)")
+    distro_choice = input("Enter your choice (1/2/3): ")
+    if distro_choice not in ['1', '2', '3']:
+        print("Invalid choice. Please enter 1 for WSL, 2 for Linux, or 3 for Mac.")
         exit(1)
     if distro_choice == '1':
         distro_type = 'WSL'
-    else:
+    elif distro_choice == '2':
         distro_type = 'Linux'
+    else:
+        distro_type = 'Mac'
     print(f"You have selected: {distro_type}")
     workspace_name = input('Enter workspace name: ')
     application_name = input('Enter application name: ')
